@@ -1,0 +1,12 @@
+<nav>
+  <form (ngSubmit)="handleSearch()" class="search-form">
+    <input
+      type="text"
+      placeholder="Buscar filmes..."
+      class="search-input"
+      [(ngModel)]="searchTerm"
+      name="search"
+    />
+    <button type="submit" class="search-button">Buscar</button>
+  </form>
+</nav>

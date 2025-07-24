@@ -1,4 +1,16 @@
+<h1 class="page-title">Filmes Mais Populares</h1>
+
 <div class="movies-container">
-  <app-movie-card *ngFor="let movie of popularMovies" [movie]="movie">
+  <app-movie-card *ngFor="let movie of movies" [movie]="movie">
   </app-movie-card>
+</div>
+
+<div class="pagination-container">
+  <button (click)="previousPage()" [disabled]="currentPage === 1">
+    Anterior
+  </button>
+  <span>Página {{ currentPage }} de {{ totalPages }}</span>
+  <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+    Próxima
+  </button>
 </div>

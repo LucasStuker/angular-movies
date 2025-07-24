@@ -1,0 +1,24 @@
+<div *ngIf="movie" class="details-container">
+  <img
+    [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+    [alt]="movie.title"
+    class="detais-poster"
+  />
+  <div class="details-info">
+    <h1>{{ movie.title }}</h1>
+    <p class="tagline">{{ movie.tagline }}</p>
+
+    <h2>Sinopse</h2>
+    <p>{{ movie.overview }}</p>
+
+    <div class="info-pills">
+      <span> Lançamento: {{ movie.release_data | date : "dd/MM/yyyy" }}</span>
+      <span> Duração: {{ movie.runtime }} min</span>
+      <span> Nota: {{ movie.vote_average }}</span>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!movie">
+  <p>Carregando detalhes do filme...</p>
+</div>

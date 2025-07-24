@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-
+import { MovieDetailsComponent } from './pages/movie-details/movie-details.component';
+import { SearchResultsComponent } from './pages/search-results/search-results.component';
 export const routes: Routes = [
   {
     path: '',
@@ -11,5 +12,13 @@ export const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  },
+  {
+    path: 'movie/:id',
+    component: MovieDetailsComponent,
+  },
+  {
+    path: 'search/:query',
+    component: SearchResultsComponent, //
   },
 ];

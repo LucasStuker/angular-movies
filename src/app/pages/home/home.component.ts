@@ -10,13 +10,32 @@ import { MovieCardComponent } from '../../components/movie-card/movie-card.compo
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  popularMovies: any[] = [];
+  movies: any[] = [];
+  currentPage: number = 1;
+  totalPages: number = 0;
 
   constructor(private movieService: MovieService) {}
 
   ngOnInit(): void {
-    this.movieService.getPopularMovies().subscribe((data) => {
-      this.popularMovies = data.results;
+    this.loadMovies(this.currentPage);
+  }
+  loadMovies(page: number): void {
+    this.movieService.getPopularMovies(page).subscribe((data) => {
+      this.movies = data.results.filter((movie: any) => movie.poster_path);
+      this.currentPage = data.page;
+      this.totalPages = data.total_pages;
     });
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.loadMovies(this.currentPage + 1);
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.loadMovies(this.currentPage - 1);
+    }
   }
 }

@@ -12,9 +12,20 @@ export class MovieService {
 
   constructor(private http: HttpClient) {}
 
-  getPopularMovies(): Observable<any> {
-    const url = `${this.apiUrl}/movie/popular?api_key=${this.apiKey}&language=pt-BR`;
+  getPopularMovies(page: number): Observable<any> {
+    const url = `${this.apiUrl}/movie/popular?api_key=${this.apiKey}&language=pt-BR&page=${page}`;
     console.log('Buscando filmes populares:', url);
+    return this.http.get<any>(url);
+  }
+
+  getMovieDetails(id: string): Observable<any> {
+    const url = `${this.apiUrl}/movie/${id}?api_key=${this.apiKey}&language=pt-BR`;
+    console.log('Buscando detalhdos do filme:', url);
+    return this.http.get(url);
+  }
+
+  searchMovies(query: string): Observable<any> {
+    const url = `${this.apiUrl}/search/movie?api_key=${this.apiKey}&language=pt-BR&query=${query}`;
     return this.http.get<any>(url);
   }
 }

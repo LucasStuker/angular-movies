@@ -1,0 +1,12 @@
+<div class="search-header">
+  <h1>Resultados da busa para : "{{ query }}"</h1>
+</div>
+
+<div *ngIf="searchResults.length > 0; else noResults" class="movies-container">
+  <app-movie-card *ngFor="let movie of searchResults" [movie]="movie">
+  </app-movie-card>
+</div>
+
+<ng-template #noResults>
+  <p class="no-results-message">Nenhum filme encontrado</p>
+</ng-template>

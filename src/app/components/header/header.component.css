@@ -1,0 +1,22 @@
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background-color: #141414;
+  border-bottom: 1px solid #333;
+  /* Deixa o header fixo no topo */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 70px; /* Altura fixa */
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #e50914; /* Vermelho temático */
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
