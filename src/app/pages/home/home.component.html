@@ -1,5 +1,5 @@
 <h1 class="page-title">Filmes Mais Populares</h1>
-
+<app-genre-list (genreSelected)="handleGenreSelection($event)"></app-genre-list>
 <div class="movies-container">
   <app-movie-card *ngFor="let movie of movies" [movie]="movie">
   </app-movie-card>

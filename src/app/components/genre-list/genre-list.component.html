@@ -1,0 +1,12 @@
+<div class="genres-container">
+  <button (click)="onSelectGenre(null)" [class.active]="!selectedGenreId">
+    Poulares
+  </button>
+  <button
+    *ngFor="let genre of genres"
+    (click)="onSelectGenre(genre.id)"
+    [class.active]="selectedGenreId === genre.id"
+  >
+    {{ genre.name }}
+  </button>
+</div>

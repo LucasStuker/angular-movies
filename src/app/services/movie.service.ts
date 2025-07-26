@@ -28,4 +28,12 @@ export class MovieService {
     const url = `${this.apiUrl}/search/movie?api_key=${this.apiKey}&language=pt-BR&query=${query}`;
     return this.http.get<any>(url);
   }
+  getGenres(): Observable<any> {
+    const url = `${this.apiUrl}/genre/movie/list?api_key=${this.apiKey}&language=pt-BR`;
+    return this.http.get(url);
+  }
+  getMoviesByGenre(genreId: number, page: number): Observable<any> {
+    const url = `${this.apiUrl}/discover/movie?api_key=${this.apiKey}&language=pt-BR&with_genres=${genreId}&page=${page}`;
+    return this.http.get(url);
+  }
 }
