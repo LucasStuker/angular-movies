@@ -1,5 +1,11 @@
 <a [routerLink]="['/movie', movie.id]" class="card-link">
   <div class="movie-card">
+    <div class="watchlist-button" (click)="toogleWatchlist($event)">
+      <ng-container *ngIf="isInWatchlist; else notInWatchlist">
+        <span>❤️</span>
+      </ng-container>
+      <ng-template #notInWatchlist> <span>🤍</span> </ng-template>
+    </div>
     <img
       [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
       [alt]="movie.title"

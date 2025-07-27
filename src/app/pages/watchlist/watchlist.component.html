@@ -1,0 +1,21 @@
+<h1 class="page-title">Minha Lista para Assistir</h1>
+
+<ng-container *ngIf="watchList$ | async as watchlist">
+  <div
+    *ngIf="watchlist.length > 0; else emptyWatchlist"
+    class="movies-container"
+  >
+    <app-movie-card *ngFor="let movie of watchlist" [movie]="movie">
+    </app-movie-card>
+  </div>
+
+  <ng-template #emptyWatchlist>
+    <div class="empty-message">
+      <p>Sua lista está vazia!</p>
+      <p>
+        Navegue pelo site e clique no ícone de coração (❤️) para adicionar
+        filmes aqui.
+      </p>
+    </div>
+  </ng-template>
+</ng-container>

@@ -16,6 +16,10 @@
       <span> Duração: {{ movie.runtime }} min</span>
       <span> Nota: {{ movie.vote_average }}</span>
     </div>
+    <button class="watchlist-btn" (click)="toggleWatchlist()">
+      <span *ngIf="!isInWatchlist">+ Adicionar à minha lista</span>
+      <span *ngIf="isInWatchlist">✓ Remover da lista</span>
+    </button>
   </div>
 </div>
 

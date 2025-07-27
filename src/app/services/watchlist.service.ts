@@ -20,7 +20,7 @@ export class WatchlistService {
     this.watchlistSource.next(watchlist); // Emite a nova lista para quem estiver ouvindo
   }
 
-  ddToWatchlist(movie: any): void {
+  addToWatchlist(movie: any): void {
     const currentWatchlist = this.getWatchlistFromStorage();
     // Evita adicionar filmes duplicados
     if (!this.isInWatchlist(movie.id)) {

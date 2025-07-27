@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  background-color: #141414;
+  color: #e5e5e5;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 40px 20px 20px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+.movies-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 80px 20px;
+  color: #888;
+}
+
+.empty-message p {
+  font-size: 1.2rem;
+  font-style: italic;
+  margin: 10px;
+}

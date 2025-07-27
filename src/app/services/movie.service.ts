@@ -36,4 +36,25 @@ export class MovieService {
     const url = `${this.apiUrl}/discover/movie?api_key=${this.apiKey}&language=pt-BR&with_genres=${genreId}&page=${page}`;
     return this.http.get(url);
   }
+
+  discoverMovies(
+    genreId: string,
+    minRating: number,
+    startYear: number,
+    page: number
+  ): Observable<any> {
+    let url = `${this.apiUrl}/discover/movie?api_key=${this.apiKey}&language=pt-BR&sort_by=popularity.desc&page=${page}`;
+
+    if (genreId) {
+      url += `&with_genres=${genreId}`;
+    }
+    if (minRating) {
+      url += `&vote_average.gte=${minRating}`; // .gte = Greater than or equal (maior ou igual)
+    }
+    if (startYear) {
+      url += `&primary_release_date.gte=${startYear}-01-01`; // .gte = a partir de 01/01 do ano
+    }
+
+    return this.http.get(url);
+  }
 }

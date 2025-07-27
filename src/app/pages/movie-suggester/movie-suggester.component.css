@@ -1,0 +1,136 @@
+:host {
+  display: block;
+  background-color: #141414;
+  color: #e5e5e5;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+.suggester-container {
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+/* ===== TÍTULOS ===== */
+.page-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #b3b3b3;
+  margin-bottom: 50px;
+}
+
+/* ===== PAINEL DE FILTROS ===== */
+.filters-panel {
+  display: flex;
+  justify-content: space-around;
+  gap: 30px;
+  background-color: #1f1f1f;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  min-width: 200px;
+}
+
+.filter-group label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #c0c0c0;
+}
+
+/* Estilo para os campos do formulário */
+.filter-group select,
+.filter-group input[type="number"] {
+  background-color: #333;
+  border: 1px solid #555;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.filter-group input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+}
+
+/* ===== BOTÃO PRINCIPAL ===== */
+.suggest-button {
+  background-color: #e50914;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 18px 40px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 40px;
+}
+
+.suggest-button:hover:not(:disabled) {
+  background-color: #f6121d;
+  transform: scale(1.02);
+}
+
+.suggest-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ===== ÁREA DE RESULTADO ===== */
+.result-area {
+  min-height: 450px; /* Reserva espaço para evitar que a página "pule" */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.result-area app-movie-card {
+  transform: scale(
+    1.2
+  ); /* Deixa o card do resultado um pouco maior para dar destaque */
+  transition: transform 0.5s ease;
+}
+
+.error-message {
+  color: #ffcdd2;
+  font-size: 1.1rem;
+  background-color: rgba(229, 9, 20, 0.2);
+  border: 1px solid #e50914;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* ===== AJUSTES PARA CELULAR (Responsividade) ===== */
+@media (max-width: 768px) {
+  .filters-panel {
+    flex-direction: column;
+    align-items: center;
+  }
+  .page-title {
+    font-size: 2.2rem;
+  }
+}
