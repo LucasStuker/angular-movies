@@ -14,6 +14,9 @@ import { MovieService } from '../../services/movie.service';
 export class SearchResultsComponent implements OnInit {
   searchResults: any[] = [];
   query: string = '';
+  currentPage: number = 1;
+  totalPages: number = 0;
+  private readonly MIN_VOTE_COUNT = 50;
 
   constructor(
     private router: ActivatedRoute,
@@ -24,17 +27,31 @@ export class SearchResultsComponent implements OnInit {
     this.router.paramMap.subscribe((params) => {
       this.query = params.get('query') || '';
       if (this.query) {
-        this.loadSearchResults();
+        this.loadSearchResults(1);
       }
     });
   }
 
-  loadSearchResults(): void {
+  loadSearchResults(page: number): void {
     this.movieService.searchMovies(this.query).subscribe((data) => {
-      this.searchResults = data.results.filter(
-        (movie: any) => movie.poster_path
+      const filteredresults = data.results.filter(
+        (movie: any) =>
+          movie && movie.poster_path && movie.vote_count >= this.MIN_VOTE_COUNT
       );
-      console.log('Resultados da pesquisa:', this.searchResults);
+      this.searchResults = filteredresults;
+      this.currentPage = data.page;
+      this.totalPages = data.total_pages;
     });
+  }
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.loadSearchResults(this.currentPage + 1);
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.loadSearchResults(this.currentPage - 1);
+    }
   }
 }

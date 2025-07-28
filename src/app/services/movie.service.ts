@@ -37,13 +37,21 @@ export class MovieService {
     return this.http.get(url);
   }
 
+  getMovieCredits(id: string): Observable<any> {
+    const url = `${this.apiUrl}/movie/${id}/credits?api_key=${this.apiKey}&language=pt-BR`;
+    return this.http.get(url);
+  }
+
   discoverMovies(
     genreId: string,
     minRating: number,
     startYear: number,
-    page: number
+    page: number,
+    minVoteCount: number,
+    sortBy: string,
+    exactYear: number | null = null
   ): Observable<any> {
-    let url = `${this.apiUrl}/discover/movie?api_key=${this.apiKey}&language=pt-BR&sort_by=popularity.desc&page=${page}`;
+    let url = `${this.apiUrl}/discover/movie?api_key=${this.apiKey}&language=pt-BR&sort_by=${sortBy}&page=${page}`;
 
     if (genreId) {
       url += `&with_genres=${genreId}`;
@@ -51,8 +59,18 @@ export class MovieService {
     if (minRating) {
       url += `&vote_average.gte=${minRating}`; // .gte = Greater than or equal (maior ou igual)
     }
+
+    if (exactYear) {
+      url += `&primary_release_year=${exactYear}`;
+    } else if (startYear) {
+      // Só usa o 'a partir de' se um ano exato não for fornecido
+      url += `&primary_release_date.gte=${startYear}-01-01`;
+    }
     if (startYear) {
       url += `&primary_release_date.gte=${startYear}-01-01`; // .gte = a partir de 01/01 do ano
+    }
+    if (minVoteCount) {
+      url += `&vote_count.gte=${minVoteCount}`;
     }
 
     return this.http.get(url);

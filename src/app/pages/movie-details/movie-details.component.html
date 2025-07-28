@@ -2,8 +2,9 @@
   <img
     [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
     [alt]="movie.title"
-    class="detais-poster"
+    class="details-poster"
   />
+
   <div class="details-info">
     <h1>{{ movie.title }}</h1>
     <p class="tagline">{{ movie.tagline }}</p>
@@ -12,17 +13,32 @@
     <p>{{ movie.overview }}</p>
 
     <div class="info-pills">
-      <span> Lançamento: {{ movie.release_data | date : "dd/MM/yyyy" }}</span>
-      <span> Duração: {{ movie.runtime }} min</span>
-      <span> Nota: {{ movie.vote_average }}</span>
+      <span>Lançamento: {{ movie.release_date | date : "dd/MM/yyyy" }}</span>
+      <span>Duração: {{ movie.runtime }} min</span>
+      <span>Nota: {{ movie.vote_average | number : "1.1-1" }}</span>
     </div>
+
     <button class="watchlist-btn" (click)="toggleWatchlist()">
       <span *ngIf="!isInWatchlist">+ Adicionar à minha lista</span>
       <span *ngIf="isInWatchlist">✓ Remover da lista</span>
     </button>
+
+    <div *ngIf="cast.length > 0" class="cast-section">
+      <h2>Elenco Principal</h2>
+      <div class="cast-container">
+        <div *ngFor="let actor of cast" class="cast-member">
+          <img
+            [src]="'https://image.tmdb.org/t/p/w185' + actor.profile_path"
+            [alt]="actor.name"
+            class="actor-photo"
+          />
+          <p class="actor-name">{{ actor.name }}</p>
+          <p class="character-name">{{ actor.character }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<div *ngIf="!movie">
+<div *ngIf="!movie" class="loading-message">
   <p>Carregando detalhes do filme...</p>
 </div>

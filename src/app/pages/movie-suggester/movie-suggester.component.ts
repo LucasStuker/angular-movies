@@ -3,23 +3,27 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MovieService } from '../../services/movie.service';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
-
+import { forkJoin, of } from 'rxjs';
 @Component({
   selector: 'app-movie-suggester',
-  standalone: true, // <<< 1. ESTAVA FALTANDO ESTE PONTO CRÍTICO!
+  standalone: true,
   imports: [CommonModule, FormsModule, MovieCardComponent],
   templateUrl: './movie-suggester.component.html',
-  styleUrls: ['./movie-suggester.component.css'], // Padrão é 'styleUrls' (plural)
+  styleUrls: ['./movie-suggester.component.css'],
 })
 export class MovieSuggesterComponent implements OnInit {
-  // Propriedades (estavam corretas)
   genres: any[] = [];
   selectedGenreId: string = '';
   minRating: number = 7;
+  minVoteCount: number = 300;
   startYear: number = 2010;
   suggestedMovie: any = null;
   isLoading: boolean = false;
   error: string | null = null;
+  sortBy: string = 'popularity.desc';
+  exactYear: number | null = null;
+
+  private suggestedMovieIds = new Set<number>();
 
   constructor(private movieService: MovieService) {}
 
@@ -33,78 +37,105 @@ export class MovieSuggesterComponent implements OnInit {
     });
   }
 
-  // CORREÇÃO 2: Nome da função no singular para bater com o HTML
   findAndSuggestMovie(): void {
     this.isLoading = true;
-    this.suggestedMovie = null;
     this.error = null;
+    this.suggestedMovie = null;
 
-    // 1. Primeira chamada para descobrir o total de páginas
     this.movieService
-      .discoverMovies(this.selectedGenreId, this.minRating, this.startYear, 1)
+      .discoverMovies(
+        this.selectedGenreId,
+        this.minRating,
+        this.startYear,
+        1,
+        this.minVoteCount,
+        this.sortBy,
+        this.exactYear
+      )
       .subscribe({
         next: (initialData: any) => {
-          // Se a primeira página já não tem resultados, não há o que fazer.
           if (!initialData.results || initialData.results.length === 0) {
             this.error =
-              'Nenhum filme encontrado com esses critérios. Tente filtros mais abertos!';
-            this.isLoading = false;
-            return; // Encerra a função aqui
-          }
-
-          // A API do TMDb limita os resultados a 500 páginas, então usamos o menor valor
-          const totalPages = Math.min(initialData.total_pages, 500);
-          const randomPage = Math.floor(Math.random() * totalPages) + 1;
-
-          // Se a página aleatória for a 1, já temos os dados! Não precisa de nova chamada.
-          if (randomPage === 1) {
-            const randomIndex = Math.floor(
-              Math.random() * initialData.results.length
-            );
-            this.suggestedMovie = initialData.results[randomIndex];
+              'Nenhum filme encontrado com os critérios selecionados.';
             this.isLoading = false;
             return;
           }
+          const totalPages = Math.min(initialData.total_pages, 500);
 
-          // 2. Segunda chamada, agora para a página aleatória e válida
-          this.movieService
-            .discoverMovies(
-              this.selectedGenreId,
-              this.minRating,
-              this.startYear,
-              randomPage
-            )
-            .subscribe({
-              next: (randomPageData: any) => {
-                if (
-                  randomPageData.results &&
-                  randomPageData.results.length > 0
-                ) {
-                  const randomIndex = Math.floor(
-                    Math.random() * randomPageData.results.length
-                  );
-                  this.suggestedMovie = randomPageData.results[randomIndex];
-                } else {
-                  // Caso raro da página aleatória vir vazia, sorteamos da primeira página como fallback
-                  const randomIndex = Math.floor(
-                    Math.random() * initialData.results.length
-                  );
-                  this.suggestedMovie = initialData.results[randomIndex];
-                }
-                this.isLoading = false;
-              },
-              error: (err) => {
+          const randomPage1 = Math.floor(Math.random() * totalPages) + 1;
+          let randomPage2 = randomPage1;
+          if (totalPages > 1) {
+            while (randomPage2 === randomPage1) {
+              randomPage2 = Math.floor(Math.random() * totalPages) + 1;
+            }
+          }
+          const call1 = this.movieService.discoverMovies(
+            this.selectedGenreId,
+            this.minRating,
+            this.startYear,
+            randomPage1,
+            this.minVoteCount,
+            this.sortBy,
+            this.exactYear
+          );
+          const call2 =
+            totalPages > 1
+              ? this.movieService.discoverMovies(
+                  this.selectedGenreId,
+                  this.minRating,
+                  this.startYear,
+                  randomPage2,
+                  this.minVoteCount,
+                  this.sortBy,
+                  this.exactYear
+                )
+              : of({ results: [] });
+
+          forkJoin([call1, call2]).subscribe({
+            next: (results) => {
+              const [Page1Data, Page2Data] = results;
+
+              const combinetdResults = [
+                ...Page1Data.results,
+                ...Page2Data.results,
+              ];
+              const newMovies = combinetdResults.filter(
+                (movie: any) =>
+                  movie &&
+                  movie.poster_path &&
+                  !this.suggestedMovieIds.has(movie.id)
+              );
+
+              if (newMovies.length > 0) {
+                const randomIndex = Math.floor(
+                  Math.random() * newMovies.length
+                );
+                this.suggestedMovie = newMovies[randomIndex];
+                this.suggestedMovieIds.add(this.suggestedMovie.id);
+              } else {
                 this.error =
-                  'Ocorreu um erro na segunda busca. Tente novamente.';
-                this.isLoading = false;
-              },
-            });
+                  'Nenhum filme novo encontrado com os critérios selecionados.';
+              }
+              this.isLoading = false;
+            },
+            error: (err) => {
+              console.error('Erro ao buscar filmes:', err);
+              this.error = 'Ocorreu um erro ao buscar filmes. Tente novamente.';
+              this.isLoading = false;
+            },
+          });
         },
         error: (err) => {
-          this.error =
-            'Ocorreu um erro ao buscar os filmes. Tente novamente mais tarde.';
+          console.error('Erro ao buscar filmes:', err);
+          this.error = 'Ocorreu um erro ao buscar filmes. Tente novamente.';
           this.isLoading = false;
         },
       });
+  }
+
+  clearHistory(): void {
+    this.suggestedMovieIds.clear();
+    this.suggestedMovie = null;
+    this.error = 'Histórico de sugestões limpo! Pode sortear de novo.';
   }
 }

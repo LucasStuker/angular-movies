@@ -109,9 +109,7 @@
 }
 
 .result-area app-movie-card {
-  transform: scale(
-    1.2
-  ); /* Deixa o card do resultado um pouco maior para dar destaque */
+  transform: scale(1.2);
   transition: transform 0.5s ease;
 }
 
@@ -122,6 +120,26 @@
   border: 1px solid #e50914;
   padding: 20px;
   border-radius: 8px;
+}
+
+.clear-history-button {
+  background: transparent;
+  border: 1px solid #555;
+  color: #888;
+  padding: 10px 20px;
+  margin-left: 15px;
+  vertical-align: middle;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.clear-history-button:hover {
+  background-color: #333;
+  border-color: #777;
+  color: #fff;
 }
 
 /* ===== AJUSTES PARA CELULAR (Responsividade) ===== */

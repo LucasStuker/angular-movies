@@ -10,9 +10,7 @@
 
 .details-container {
   display: flex;
-  flex-wrap: wrap; /* Permite quebrar a linha em telas menores */
-  justify-content: center; /* Centraliza o conteúdo */
-  padding: 0 50px; /* Espaçamento nas laterais */
+  padding: 50px;
   gap: 50px;
   max-width: 1300px;
   margin: auto;
@@ -151,4 +149,57 @@
 /* Estilo para quando o filme JÁ ESTÁ na lista */
 .watchlist-btn.in-list {
   background-color: #2c6e3a; /* um tom de verde */
+}
+.cast-container {
+  display: flex; /* Alinha os itens em uma linha */
+  overflow-x: auto; /* Cria o scroll horizontal quando o conteúdo transborda */
+  overflow-y: hidden; /* Esconde qualquer scroll vertical desnecessário */
+  padding: 10px 2px 20px 2px; /* Espaço para a barra de rolagem não ficar colada */
+  gap: 20px;
+}
+
+/* Estilo da barra de scroll (opcional, mas deixa mais bonito) */
+.cast-container::-webkit-scrollbar {
+  height: 8px;
+}
+.cast-container::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+.cast-container::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+.cast-member {
+  text-align: center;
+  width: 140px;
+  flex-shrink: 0; /* MUITO IMPORTANTE: Impede que os cards encolham para caber na tela */
+}
+
+.actor-photo {
+  width: 120px;
+  height: 180px;
+  border-radius: 8px;
+  object-fit: cover;
+  background-color: #333;
+}
+
+.actor-name {
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: #fff;
+  white-space: nowrap; /* Impede que nomes longos quebrem a linha */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona '...' se o nome for muito grande */
+}
+
+.character-name {
+  font-size: 0.9rem;
+  color: #b3b3b3;
+  margin-top: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

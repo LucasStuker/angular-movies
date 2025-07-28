@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../services/movie.service';
-
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-movie-details',
   imports: [CommonModule],
@@ -12,6 +12,7 @@ import { MovieService } from '../../services/movie.service';
 })
 export class MovieDetailsComponent implements OnInit {
   movie: any = null;
+  cast: any[] = [];
   isInWatchlist: boolean = false;
 
   constructor(
@@ -23,10 +24,12 @@ export class MovieDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.movieService.getMovieDetails(id).subscribe((data) => {
-        console.log('Detalhes do filme:', data);
-        this.movie = data;
-
+      forkJoin({
+        details: this.movieService.getMovieDetails(id),
+        credits: this.movieService.getMovieCredits(id),
+      }).subscribe(({ details, credits }) => {
+        this.movie = details;
+        this.cast = credits.cast.filter((member: any) => member.profile_path);
         this.listenToWatchlistChanges();
       });
     }
