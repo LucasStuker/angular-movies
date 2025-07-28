@@ -1,24 +1,29 @@
-import { WatchlistService } from './../../services/watchlist.service';
+import { WatchlistService } from '../../services/watchlist.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../services/movie.service';
 import { forkJoin } from 'rxjs';
+
 @Component({
   selector: 'app-movie-details',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './movie-details.component.html',
-  styleUrl: './movie-details.component.css',
+  styleUrls: ['./movie-details.component.css'],
 })
 export class MovieDetailsComponent implements OnInit {
   movie: any = null;
   cast: any[] = [];
   isInWatchlist: boolean = false;
+  hasWatchProviders: boolean = false;
+  watchProviders: any = null;
 
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
-    private WatchlistService: WatchlistService
+
+    private watchlistService: WatchlistService
   ) {}
 
   ngOnInit(): void {
@@ -27,25 +32,36 @@ export class MovieDetailsComponent implements OnInit {
       forkJoin({
         details: this.movieService.getMovieDetails(id),
         credits: this.movieService.getMovieCredits(id),
-      }).subscribe(({ details, credits }) => {
+        providers: this.movieService.getMovieWatchProviders(id),
+      }).subscribe(({ details, credits, providers }) => {
         this.movie = details;
-        this.cast = credits.cast.filter((member: any) => member.profile_path);
+        this.cast = credits.cast
+          .filter((member: any) => member.profile_path)
+          .slice(0, 10);
+        this.watchProviders = providers.results.BR;
+        this.hasWatchProviders = !!(
+          this.watchProviders?.flatrate ||
+          this.watchProviders?.rent ||
+          this.watchProviders?.buy
+        );
         this.listenToWatchlistChanges();
       });
     }
   }
 
   listenToWatchlistChanges(): void {
-    this.WatchlistService.watchlist$.subscribe((watchlist) => {
-      this.isInWatchlist = watchlist.some((item) => item.id === this.movie.id);
+    this.watchlistService.watchlist$.subscribe(() => {
+      if (this.movie) {
+        this.isInWatchlist = this.watchlistService.isInWatchlist(this.movie.id);
+      }
     });
   }
 
   toggleWatchlist(): void {
     if (this.isInWatchlist) {
-      this.WatchlistService.removeFromWatchlist(this.movie.id);
+      this.watchlistService.removeFromWatchlist(this.movie.id);
     } else {
-      this.WatchlistService.addToWatchlist(this.movie);
+      this.watchlistService.addToWatchlist(this.movie);
     }
   }
 }

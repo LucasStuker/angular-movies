@@ -37,6 +37,52 @@
         </div>
       </div>
     </div>
+
+    <div *ngIf="watchProviders" class="providers-section">
+      <h2>Onde Assistir</h2>
+      <div *ngIf="watchProviders.flatrate as providers">
+        <h3>Disponível na sua assinatura:</h3>
+        <div class="providers-list">
+          <div *ngFor="let provider of providers" class="provider-item">
+            <img
+              [src]="'https://image.tmdb.org/t/p/w92' + provider.logo_path"
+              [alt]="provider.provider_name"
+              [title]="provider.provider_name"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="watchProviders.rent as providers">
+        <h3>Para Alugar:</h3>
+        <div class="providers-list">
+          <div *ngFor="let provider of providers" class="provider-item">
+            <img
+              [src]="'https://image.tmdb.org/t/p/w92' + provider.logo_path"
+              [alt]="provider.provider_name"
+              [title]="provider.provider_name"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="watchProviders.buy as providers">
+        <h3>Para Comprar:</h3>
+        <div class="providers-list">
+          <div *ngFor="let provider of providers" class="provider-item">
+            <img
+              [src]="'https://image.tmdb.org/t/p/w92' + provider.logo_path"
+              [alt]="provider.provider_name"
+              [title]="provider.provider_name"
+            />
+          </div>
+        </div>
+      </div>
+
+      <p *ngIf="!hasWatchProviders" class="no-providers-message">
+        Não encontramos informações de streaming para este filme no Brasil.
+      </p>
+    </div>
   </div>
 </div>
 <div *ngIf="!movie" class="loading-message">

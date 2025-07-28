@@ -41,6 +41,10 @@ export class MovieService {
     const url = `${this.apiUrl}/movie/${id}/credits?api_key=${this.apiKey}&language=pt-BR`;
     return this.http.get(url);
   }
+  getMovieWatchProviders(id: string): Observable<any> {
+    const url = `${this.apiUrl}/movie/${id}/watch/providers?api_key=${this.apiKey}`;
+    return this.http.get(url);
+  }
 
   discoverMovies(
     genreId: string,
@@ -57,17 +61,16 @@ export class MovieService {
       url += `&with_genres=${genreId}`;
     }
     if (minRating) {
-      url += `&vote_average.gte=${minRating}`; // .gte = Greater than or equal (maior ou igual)
+      url += `&vote_average.gte=${minRating}`;
     }
 
     if (exactYear) {
       url += `&primary_release_year=${exactYear}`;
     } else if (startYear) {
-      // Só usa o 'a partir de' se um ano exato não for fornecido
       url += `&primary_release_date.gte=${startYear}-01-01`;
     }
     if (startYear) {
-      url += `&primary_release_date.gte=${startYear}-01-01`; // .gte = a partir de 01/01 do ano
+      url += `&primary_release_date.gte=${startYear}-01-01`;
     }
     if (minVoteCount) {
       url += `&vote_count.gte=${minVoteCount}`;

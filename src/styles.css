@@ -1,8 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
 body {
-  margin: 0; /* Remove margens padrão do navegador que causam espaços */
+  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif; /* Define uma fonte padrão bonita para o app todo */
-  background-color: #141414; /* Define o fundo escuro globalmente */
-  color: #e5e5e5; /* Define a cor do texto padrão para claro */
+    Arial, sans-serif;
+  background-color: #141414;
+  color: #e5e5e5;
 }

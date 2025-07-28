@@ -173,7 +173,7 @@
 .cast-member {
   text-align: center;
   width: 140px;
-  flex-shrink: 0; /* MUITO IMPORTANTE: Impede que os cards encolham para caber na tela */
+  flex-shrink: 0;
 }
 
 .actor-photo {
@@ -190,9 +190,9 @@
   margin-bottom: 5px;
   font-size: 1rem;
   color: #fff;
-  white-space: nowrap; /* Impede que nomes longos quebrem a linha */
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Adiciona '...' se o nome for muito grande */
+  text-overflow: ellipsis;
 }
 
 .character-name {
@@ -202,4 +202,39 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.providers-section {
+  background-color: #1f1f1f;
+  border-radius: 12px;
+  padding: 25px 30px;
+  margin-top: 30px;
+  border: 1px solid #333;
+}
+
+.providers-section h2 {
+  margin: 0 0 20px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: none;
+}
+
+.providers-section h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #aaa;
+  margin: 20px 0 10px 0;
+}
+
+.providers-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.provider-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background-color: #fff; /* Fundo branco para logos com transparência */
 }

@@ -99,10 +99,8 @@
   opacity: 0.7;
 }
 
-/* ===== ÁREA DE RESULTADO ===== */
 .result-area {
-  min-height: 450px; /* Reserva espaço para evitar que a página "pule" */
-  display: flex;
+  min-height: 450px;
   justify-content: center;
   align-items: center;
   padding: 20px;
