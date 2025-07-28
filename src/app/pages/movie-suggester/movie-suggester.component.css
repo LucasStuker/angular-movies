@@ -100,8 +100,11 @@
 }
 
 .result-area {
+  width: 100%;
+  box-sizing: border-box;
   min-height: 450px;
   justify-content: center;
+  display: flex;
   align-items: center;
   padding: 20px;
 }

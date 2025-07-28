@@ -64,4 +64,12 @@ export class MovieDetailsComponent implements OnInit {
       this.watchlistService.addToWatchlist(this.movie);
     }
   }
+  getHeroImage() {
+    if (this.movie?.backdrop_path) {
+      // Usamos a imagem de fundo 'backdrop' que a API fornece
+      return `url(https://image.tmdb.org/t/p/w1280${this.movie.backdrop_path})`;
+    }
+    // Se não houver imagem de fundo, não aplica nenhuma
+    return 'none';
+  }
 }
