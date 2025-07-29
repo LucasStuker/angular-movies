@@ -38,7 +38,6 @@
   padding: 50px;
 }
 
-/* Mensagem de "Carregando..." */
 .loading-message {
   text-align: center;
   padding: 50px;
@@ -46,8 +45,6 @@
   font-style: italic;
   color: #888;
 }
-
-/* ===== PÔSTER COM EFEITO ===== */
 .details-poster {
   margin-top: 50px;
   width: 342px; /* Tamanho de pôster padrão do TMDb */
