@@ -7,6 +7,22 @@
     <a routerLink="/suggestions" class="nav-link" routerLinkActive="active"
       >Sugestão de Filme</a
     >
+
+    <div class="profile-selector">
+      <div class="span">Votando como:</div>
+      <button
+        (click)="setProfile('lucas')"
+        [class.active]="(activeProfile$ | async) === 'lucas'"
+      >
+        Lucas
+      </button>
+      <button
+        (click)="setProfile('aline')"
+        [class.active]="(activeProfile$ | async) === 'aline'"
+      >
+        Aline
+      </button>
+    </div>
     <app-search-bar></app-search-bar>
   </nav>
 </header>
